@@ -1,2 +1,3 @@
-# ReservaDeSalas
-Projeto da disciplina de Banco de Dados II - Sistema de Reserva de Salas de Aula
+# Reserva de Salas
+Projeto da disciplina de Banco de Dados II - UDESC
+Alunos: Igor José da Costa Mota e Gabriel Zappelaro Bernardi
