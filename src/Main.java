@@ -1,19 +1,21 @@
+package src;
+
 import java.io.*;
 import java.util.*;
 public class Main {
-    static List<Room> rooms = new ArrayList<>();
-    static List<Reservation> reservations = new ArrayList<>();
+    static List<Sala> salas = new ArrayList<>();
+    static List<Reserva> reservas = new ArrayList<>();
 
     public static void loadRooms() {
         try (Scanner scanner = new Scanner(new File("rooms.txt"))) {
             int roomCount = scanner.nextInt();
             for (int i = 0; i < roomCount; i++) {
-                Room room = new Room();
-                room.id = scanner.nextInt();
-                room.name = scanner.next();
-                room.capacity = scanner.nextInt();
-                room.available = scanner.nextInt();
-                rooms.add(room);
+                Sala sala = new Sala();
+                sala.codSala = scanner.next();
+                sala.nomeSala = scanner.next();
+                sala.capacidade = scanner.nextInt();
+                sala.andar = scanner.nextInt();
+                salas.add(sala);
             }
         } catch (FileNotFoundException e) {
             System.out.println("Error opening rooms file.");
@@ -22,8 +24,8 @@ public class Main {
 
     public static void saveReservations() {
         try (PrintWriter writer = new PrintWriter("reservations.txt")) {
-            writer.println(reservations.size());
-            for (Reservation r : reservations) {
+            writer.println(reservas.size());
+            for (Reservation r : reservas) {
                 writer.printf("%d %d %s %s %d%n", r.id, r.roomId, r.roomName, r.date, r.peopleCount);
             }
         } catch (IOException e) {
@@ -41,7 +43,7 @@ public class Main {
                 r.roomName = scanner.next();
                 r.date = scanner.next();
                 r.peopleCount = scanner.nextInt();
-                reservations.add(r);
+                reservas.add(r);
             }
         } catch (FileNotFoundException e) {
             System.out.println("Error opening reservations file.");
@@ -50,14 +52,14 @@ public class Main {
 
     public static void listRooms() {
         System.out.println("Available rooms:");
-        for (Room r : rooms) {
+        for (Room r : salas) {
             System.out.printf("ID: %d, Name: %s, Capacity: %d, Available: %d%n", r.id, r.name, r.capacity, r.available);
         }
     }
 
     public static void listReservations() {
         System.out.println("All reservations:");
-        for (Reservation r : reservations) {
+        for (Reservation r : reservas) {
             System.out.printf("Reservation ID: %d, Room ID: %d, Room Name: %s, Date: %s, People Count: %d%n",
                     r.id, r.roomId, r.roomName, r.date, r.peopleCount);
         }
@@ -65,7 +67,7 @@ public class Main {
 
     public static void listRoomReservations(int roomId) {
         System.out.printf("Reservations for Room ID %d:%n", roomId);
-        for (Reservation r : reservations) {
+        for (Reservation r : reservas) {
             if (r.roomId == roomId) {
                 System.out.printf("Reservation ID: %d, Date: %s, People Count: %d%n", r.id, r.date, r.peopleCount);
             }
@@ -81,7 +83,7 @@ public class Main {
         int peopleCount = scanner.nextInt();
 
         Room room = null;
-        for (Room r : rooms) {
+        for (Room r : salas) {
             if (r.id == roomId) {
                 room = r;
                 break;
@@ -98,7 +100,7 @@ public class Main {
             return;
         }
 
-        for (Reservation r : reservations) {
+        for (Reservation r : reservas) {
             if (r.roomId == roomId && r.date.equals(date)) {
                 System.out.println("Room already reserved on this date.");
                 return;
@@ -106,13 +108,13 @@ public class Main {
         }
 
         Reservation reservation = new Reservation();
-        reservation.id = reservations.size() + 1;
+        reservation.id = reservas.size() + 1;
         reservation.roomId = roomId;
         reservation.roomName = room.name;
         reservation.date = date;
         reservation.peopleCount = peopleCount;
 
-        reservations.add(reservation);
+        reservas.add(reservation);
         System.out.println("Reservation made successfully.");
     }
 
@@ -121,7 +123,7 @@ public class Main {
         int reservationId = scanner.nextInt();
 
         Reservation target = null;
-        for (Reservation r : reservations) {
+        for (Reservation r : reservas) {
             if (r.id == reservationId) {
                 target = r;
                 break;
@@ -133,7 +135,7 @@ public class Main {
             return;
         }
 
-        reservations.remove(target);
+        reservas.remove(target);
         System.out.println("Reservation cancelled successfully.");
     }
 
